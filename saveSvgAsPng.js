@@ -97,6 +97,9 @@
     out$.svgAsDataUri(el, scaleFactor, function(uri) {
       var image = new Image();
       image.src = uri;
+      image.onerror = function() {
+        console.error("There was an error creating the image");
+      };
       image.onload = function() {
         var canvas = document.createElement('canvas');
         canvas.width = image.width;
