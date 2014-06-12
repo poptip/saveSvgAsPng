@@ -1,8 +1,6 @@
 (function() {
   var out$ = typeof exports != 'undefined' && exports || this;
 
-  var doctype = '<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">';
-
   function inlineImages(callback) {
     var images = document.querySelectorAll('svg image');
     var left = images.length;
@@ -82,7 +80,6 @@
     scaleFactor = scaleFactor || 1;
 
     inlineImages(function() {
-      var outer = document.createElement("div");
       var clone = el.cloneNode(true);
       var width = parseInt(clone.getAttribute("width"));
       var height = parseInt(clone.getAttribute("height"));
@@ -95,12 +92,11 @@
       var scaling = document.createElement("g");
       scaling.setAttribute("transform", "scale(" + scaleFactor + ")");
       clone.appendChild(moveChildren(clone, scaling));
-      outer.appendChild(clone);
 
       clone.insertBefore(styles(clone), clone.firstChild);
 
-      var svg = outer.innerHTML;
-      var uri = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(svg)));
+      var svg = (new XMLSerializer()).serializeToString(clone);
+      var uri = "data:image/svg+xml;utf8," + svg;
       if (cb) {
         cb(uri);
       }
