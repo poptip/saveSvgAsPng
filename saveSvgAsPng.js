@@ -27,14 +27,6 @@
     }
   }
 
-  function moveChildren(src, dest) {
-    while (src.children.length > 0) {
-      var child = src.children[0];
-      dest.appendChild(child);
-    }
-    return dest;
-  }
-
   function styles(dom) {
     var tmp = document.createElement("div");
     tmp.style.position = "absolute";
@@ -89,9 +81,7 @@
       clone.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
       clone.setAttribute("width", width * scaleFactor);
       clone.setAttribute("height", height * scaleFactor);
-      var scaling = document.createElement("g");
-      scaling.setAttribute("transform", "scale(" + scaleFactor + ")");
-      clone.appendChild(moveChildren(clone, scaling));
+      clone.setAttribute("viewBox", "0 0 " + width + " " + height);
 
       clone.insertBefore(styles(clone), clone.firstChild);
 
