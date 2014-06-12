@@ -38,26 +38,42 @@
   }
 
   function styles(dom) {
+    var tmp = document.createElement("div");
+    tmp.style.position = "absolute";
+    tmp.style.left = "-10000px";
+    tmp.style.top = "-10000px";
+    tmp.appendChild(dom);
+    document.body.appendChild(tmp);
+
     var used = "";
-    var sheets = document.styleSheets;
-    for (var i = 0; i < sheets.length; i++) {
-      var rules = sheets[i].cssRules;
-      for (var j = 0; j < rules.length; j++) {
-        var rule = rules[j];
-        if (typeof(rule.style) != "undefined") {
-          var elems = dom.querySelectorAll(rule.selectorText);
-          if (elems.length > 0) {
-            used += rule.selectorText + " { " + rule.style.cssText + " }\n";
-          }
+    var everything = dom.getElementsByTagName("*");
+    for (var i = 0, len = everything.length; i < len; i++) {
+      var el = everything[i];
+      var style = getComputedStyle(el);
+      var elcss = "";
+
+      for (var j = 0, len2 = style.length; j < len2; j++) {
+        var key = style[j];
+        var val = style[key];
+        if (val) {
+          elcss += key + ":" + val + "; ";
         }
+      }
+
+      if (elcss) {
+        var className = "_saveAsPng-" + i;
+        used += "." + className + " { " + elcss + "}\n";
+        el.classList.add(className);
       }
     }
 
-    var s = document.createElement('style');
-    s.setAttribute('type', 'text/css');
-    s.innerHTML = "<![CDATA[\n" + used + "\n]]>";
+    document.body.removeChild(tmp);
 
-    var defs = document.createElement('defs');
+    var s = document.createElement("style");
+    s.setAttribute("type", "text/css");
+    s.innerHTML = used;
+
+    var defs = document.createElement("defs");
     defs.appendChild(s);
     return defs;
   }
@@ -83,7 +99,7 @@
 
       clone.insertBefore(styles(clone), clone.firstChild);
 
-      var svg = doctype + outer.innerHTML;
+      var svg = outer.innerHTML;
       var uri = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(svg)));
       if (cb) {
         cb(uri);
