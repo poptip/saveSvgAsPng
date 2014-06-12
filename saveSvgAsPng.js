@@ -28,42 +28,42 @@
   }
 
   function styles(dom) {
-    var tmp = document.createElement("div");
-    tmp.style.position = "absolute";
-    tmp.style.left = "-10000px";
-    tmp.style.top = "-10000px";
+    var tmp = document.createElement('div');
+    tmp.style.position = 'absolute';
+    tmp.style.left = '-10000px';
+    tmp.style.top = '-10000px';
     tmp.appendChild(dom);
     document.body.appendChild(tmp);
 
-    var used = "";
-    var everything = dom.getElementsByTagName("*");
+    var used = '';
+    var everything = dom.getElementsByTagName('*');
     for (var i = 0, len = everything.length; i < len; i++) {
       var el = everything[i];
       var style = getComputedStyle(el);
-      var elcss = "";
+      var elcss = '';
 
       for (var j = 0, len2 = style.length; j < len2; j++) {
         var key = style[j];
         var val = style[key];
         if (val) {
-          elcss += key + ":" + val + "; ";
+          elcss += key + ':' + val + '; ';
         }
       }
 
       if (elcss) {
-        var className = "_saveAsPng-" + i;
-        used += "." + className + " { " + elcss + "}\n";
+        var className = '_saveAsPng-' + i;
+        used += '.' + className + ' { ' + elcss + '}\n';
         el.classList.add(className);
       }
     }
 
     document.body.removeChild(tmp);
 
-    var s = document.createElement("style");
-    s.setAttribute("type", "text/css");
+    var s = document.createElement('style');
+    s.setAttribute('type', 'text/css');
     s.innerHTML = used;
 
-    var defs = document.createElement("defs");
+    var defs = document.createElement('defs');
     defs.appendChild(s);
     return defs;
   }
@@ -73,20 +73,20 @@
 
     inlineImages(function() {
       var clone = el.cloneNode(true);
-      var width = parseInt(clone.getAttribute("width"));
-      var height = parseInt(clone.getAttribute("height"));
+      var width = parseInt(clone.getAttribute('width'));
+      var height = parseInt(clone.getAttribute('height'));
 
-      clone.setAttribute("version", "1.1");
-      clone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-      clone.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
-      clone.setAttribute("width", width * scaleFactor);
-      clone.setAttribute("height", height * scaleFactor);
-      clone.setAttribute("viewBox", "0 0 " + width + " " + height);
+      clone.setAttribute('version', '1.1');
+      clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+      clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+      clone.setAttribute('width', width * scaleFactor);
+      clone.setAttribute('height', height * scaleFactor);
+      clone.setAttribute('viewBox', '0 0 ' + width + ' ' + height);
 
       clone.insertBefore(styles(clone), clone.firstChild);
 
       var svg = (new XMLSerializer()).serializeToString(clone);
-      var uri = "data:image/svg+xml;utf8," + svg;
+      var uri = 'data:image/svg+xml;utf8,' + svg;
       if (cb) {
         cb(uri);
       }
@@ -98,7 +98,7 @@
       var image = new Image();
       image.src = uri;
       image.onerror = function() {
-        console.error("There was an error creating the image");
+        console.error('There was an error creating the image');
       };
       image.onload = function() {
         var canvas = document.createElement('canvas');
