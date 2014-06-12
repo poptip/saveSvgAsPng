@@ -108,10 +108,14 @@
         context.drawImage(image, 0, 0);
 
         var a = document.createElement('a');
+        a.style.position = 'absolute';
+        a.style.left = '-10000px';
+        a.style.top = '-10000px';
         a.download = name;
         a.href = canvas.toDataURL('image/png');
         document.body.appendChild(a);
         a.click();
+        document.body.removeChild(a);
       }
     });
   }
