@@ -1,10 +1,10 @@
 (function() {
-  var out$ = typeof exports != 'undefined' && exports || this;
+  var out$ = typeof exports !== 'undefined' && exports || this;
 
   function inlineImages(callback) {
     var images = document.querySelectorAll('svg image');
     var left = images.length;
-    if (left == 0) {
+    if (left === 0) {
       callback();
     }
     for (var i = 0; i < images.length; i++) {
@@ -19,10 +19,10 @@
           ctx.drawImage(img, 0, 0);
           image.setAttribute('xlink:href', canvas.toDataURL('image/png'));
           left--;
-          if (left == 0) {
+          if (left === 0) {
             callback();
           }
-        }
+        };
       })(images[i]);
     }
   }
@@ -35,7 +35,7 @@
     tmp.appendChild(dom);
     document.body.appendChild(tmp);
 
-    var used = '';
+    var allcss = '';
     var everything = dom.getElementsByTagName('*');
     for (var i = 0, len = everything.length; i < len; i++) {
       var el = everything[i];
@@ -52,7 +52,7 @@
 
       if (elcss) {
         var className = '_saveAsPng-' + i;
-        used += '.' + className + ' { ' + elcss + '}\n';
+        allcss += '.' + className + '{' + elcss + '}\n';
         el.classList.add(className);
       }
     }
@@ -61,7 +61,7 @@
 
     var s = document.createElement('style');
     s.setAttribute('type', 'text/css');
-    s.innerHTML = used;
+    s.innerHTML = allcss;
 
     var defs = document.createElement('defs');
     defs.appendChild(s);
@@ -73,8 +73,8 @@
 
     inlineImages(function() {
       var clone = el.cloneNode(true);
-      var width = parseInt(clone.getAttribute('width'));
-      var height = parseInt(clone.getAttribute('height'));
+      var width = el.offsetWidth;
+      var height = el.offsetHeight;
 
       clone.setAttribute('version', '1.1');
       clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
@@ -91,7 +91,7 @@
         cb(uri);
       }
     });
-  }
+  };
 
   out$.saveSvgAsPng = function(el, name, scaleFactor) {
     out$.svgAsDataUri(el, scaleFactor, function(uri) {
@@ -116,7 +116,7 @@
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
-      }
+      };
     });
-  }
+  };
 })();
