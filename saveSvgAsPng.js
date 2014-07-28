@@ -1,6 +1,4 @@
 (function() {
-  var out$ = typeof exports !== 'undefined' && exports || this;
-
   function inlineImages(callback) {
     var images = document.querySelectorAll('svg image');
     var left = images.length;
@@ -68,7 +66,7 @@
     return defs;
   }
 
-  out$.svgAsDataUri = function(el, scaleFactor, cb) {
+  window.svgAsDataUri = function(el, scaleFactor, cb) {
     scaleFactor = scaleFactor || 1;
 
     inlineImages(function() {
@@ -93,8 +91,8 @@
     });
   };
 
-  out$.saveSvgAsPng = function(el, name, scaleFactor) {
-    out$.svgAsDataUri(el, scaleFactor, function(uri) {
+  window.saveSvgAsPng = function(el, name, scaleFactor) {
+    window.svgAsDataUri(el, scaleFactor, function(uri) {
       var image = new Image();
       image.src = uri;
       image.onerror = function() {
